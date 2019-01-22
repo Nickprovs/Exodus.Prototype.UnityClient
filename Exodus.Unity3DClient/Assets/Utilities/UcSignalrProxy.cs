@@ -42,7 +42,6 @@ namespace Assets.Utilities
 
         #endregion
 
-
         #region Methods
 
         #region Dependency Injection
@@ -352,6 +351,15 @@ namespace Assets.Utilities
                 var sourceInstances = SourceInstanceMapper.GetUcSourceInstanceListFromUcSourceListAndDtoSourceInstanceList(this._profile.Sources, (IEnumerable<SourceInstanceDto>)this._startupCache[StartupCacheKey.SourceInstances], this._commonValues.PixelToUnityUnitScale, this._unityMainThreadDispatcher);
                 this._profile.DigitalWalls = DigitalWallMapper.GetUcDigitalWallListFromDtoDigitalWallList(sourceInstances, (IEnumerable<DigitalWallDto>)this._startupCache[StartupCacheKey.DigitalWalls], this._commonValues.PixelToUnityUnitScale, this._commonValues.WallCenter, this._unityMainThreadDispatcher);
                 this._profile.SpaceSessions = SpaceSessionMapper.GetUcSpaceSessionListFromUcDigitalWallListAndDtoSpaceSessionList(this._profile.DigitalWalls, (IEnumerable<SpaceSessionDto>)this._startupCache[StartupCacheKey.SpaceSessions]);
+
+                //If we have any digital walls, render the first.
+                UcDigitalWall firstWall = this._profile.DigitalWalls.FirstOrDefault();
+                if(firstWall != null)
+                {
+                    firstWall.Render();
+                    this._profile.SelectedWall = firstWall;
+                }
+
             });
             
 
