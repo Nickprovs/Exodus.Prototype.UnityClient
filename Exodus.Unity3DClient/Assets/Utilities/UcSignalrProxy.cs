@@ -262,7 +262,9 @@ namespace Assets.Utilities
         //Non-Startup
         private void SourceAdded(SourceDto source)
         {
-            this._profile.Sources.Add(SourceMapper.GetUcSourceFromDtoSource(source));
+            this._unityMainThreadDispatcher.Enqueue(() => {
+                this._profile.Sources.Add(SourceMapper.GetUcSourceFromDtoSource(source));
+            });
         }
 
         private void SourceRemoved(int sourceId)
